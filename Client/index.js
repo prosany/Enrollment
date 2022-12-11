@@ -46,7 +46,7 @@ function updateContent(content) {
     let li = document.createElement("li");
     li.classList.add("text-xs");
     li.classList.add("my-2");
-    li.classList.add("bangla");
+    li.classList.add("font-bangla");
     li.innerHTML = `${index + 1}. ${data}`;
     outlinePlan.appendChild(li);
   });
