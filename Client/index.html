@@ -3,18 +3,175 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {},
+          fontFamily: {
+            hero: ["Space Grotesk", "sans-serif"],
+            text: ["Lato", "sans-serif"],
+            bangla: ["Hind Siliguri", "-apple-system", "sans-serif"],
+          },
+        },
+      };
+    </script>
     <title>Enroll Statistics - Programming Hero</title>
   </head>
   <body class="bg-[#efeef5] w-[90%] md:w-[85%] lg:w-[75%] mx-auto">
-    <header class="w-full mt-12">
-      <div class="flex items-center justify-between">
-        <div class="w-[300px] border rounded-md">Hello</div>
-        <div class="w-full">Others</div>
-      </div>
-    </header>
+    <main class="w-full mt-12">
+      <div class="flex items-start justify-between">
+        <div
+          class="w-[400px] border rounded-md bg-white shadow-sm mr-2 py-2 px-4 h-auto"
+        >
+          <img
+            src="./images/batch7.jpg"
+            class="w-full h-[130px] rounded mt-2"
+            alt=""
+          />
+          <div class="flex justify-center items-center overflow-hidden">
+            <img
+              src="./images/ph_logo.svg"
+              class="h-[40px] w-[40px] ml-0 mb-[10px]"
+              alt="Programming Hero V2"
+            />
+            <div>
+              <h2 class="font-hero">Programming Hero</h2>
+              <p class="font-hero font-thin text-[10px] text-neutral-900">
+                Let's Code Your Career
+              </p>
+            </div>
+          </div>
+          <div class="my-4">
+            <div class="flex justify-start items-start mb-2">
+              <i class="fad fa-map-marked-alt py-2 px-4 text-violet-600"></i>
+              <div>
+                <p class="font-text text-xs">Level-4, 34, Awal Centre,</p>
+                <p class="font-text text-xs">Banani, Dhaka</p>
+              </div>
+            </div>
+            <div class="flex justify-start items-start my-2">
+              <i class="fad fa-phone-alt py-2 px-4 text-violet-600"></i>
+              <div>
+                <a href="tel:+8801322810867" class="font-text text-xs block"
+                  >01322810867</a
+                >
+                <a href="tel:+8801322810873" class="font-text text-xs block"
+                  >01322810873</a
+                >
+              </div>
+            </div>
+            <p class="text-center font-text text-xs text-violet-900">
+              Available: 9:00am To 10:00pm
+            </p>
+            <div class="flex justify-start items-start mt-2 mb-2">
+              <i class="fad fa-at py-1 px-4 text-violet-600"></i>
+              <div>
+                <a
+                  href="mailto:web@programming-hero.com"
+                  class="font-text text-xs block"
+                  >web@programming-hero.com</a
+                >
+              </div>
+            </div>
+            <a
+              href="https://web.programming-hero.com/home/"
+              target="_blank"
+              class="font-text text-sm w-full block text-center py-2 px-2 bg-violet-600 text-white rounded mt-2 hover:bg-violet-400"
+            >
+              Enroll Now
+            </a>
+          </div>
+        </div>
+        <div
+          class="w-full border rounded-md bg-white shadow-sm ml-2 py-2 px-4 h-[100%] block"
+          id="sectionLoad"
+        ></div>
+        <div
+          class="w-full border rounded-md bg-white shadow-sm ml-2 py-2 px-4 h-[100%] hidden"
+          id="section"
+        >
+          <h1 class="font-text text-xl my-3 font-bold" id="name"></h1>
+          <div class="flex mb-3">
+            <p id="startAt" class="text-sm mr-3 font-text"></p>
+            <p id="endOn" class="text-sm ml-3 font-text"></p>
+          </div>
 
+          <div>
+            <h1 class="font-text font-bold text-violet-900">You Will Learn:</h1>
+            <ul class="font-text" id="outline"></ul>
+          </div>
+
+          <div class="flex justify-center items-center my-4">
+            <div
+              class="bg-blue-500 text-center rounded-full w-[65px] h-[65px] mx-2 flex flex-col justify-center items-center"
+            >
+              <p>
+                <strong
+                  class="font-text text-sm text-white"
+                  id="enrolled"
+                ></strong>
+              </p>
+              <h1 class="font-text text-[10px] mt-[-5px] text-white">
+                Enrolled
+              </h1>
+            </div>
+            <div
+              class="bg-blue-500 text-center rounded-full w-[65px] h-[65px] mx-2 flex flex-col justify-center items-center"
+            >
+              <p>
+                <strong
+                  class="font-text text-sm text-white"
+                  id="price"
+                ></strong>
+              </p>
+              <h1 class="font-text text-[10px] mt-[-5px] text-white">Price</h1>
+            </div>
+            <div
+              class="bg-green-500 text-center rounded-full w-[120px] h-[65px] mx-2 flex flex-col justify-center items-center relative"
+            >
+              <span
+                class="animate-ping absolute inline-flex h-[70%] w-[70%] rounded-full bg-green-400 opacity-75"
+              ></span>
+              <p>
+                <strong
+                  class="font-text text-sm text-white"
+                  id="amount"
+                ></strong>
+              </p>
+              <h1 class="font-text text-[10px] mt-[-5px] text-white">Amount</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="text-center text-sm font-text my-8" id="copyright"></footer>
+
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
     <script src="./index.js"></script>
   </body>
 </html>
