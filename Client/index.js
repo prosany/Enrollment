@@ -44,7 +44,7 @@ function updateContent(content) {
 }
 
 async function getCourse() {
-  fetch("http://localhost:7070/status?amount=true")
+  fetch("https://heroapi.msls.one/status?amount=true")
     .then((data) => data.json())
     .then((res) => {
       loading = null;

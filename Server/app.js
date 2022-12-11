@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the Express");
+  res.send("Welcome to Enroll Statistics");
   res.end();
 });
 
@@ -59,7 +59,7 @@ function numberWithCommas(x) {
 // validate host or domain
 function validateHost(req, res, next) {
   try {
-    let whitelisted = ["localhost", "127.0.0.1:5500"];
+    let whitelisted = ["enroll.msls.one"];
     let origin = req.get("origin");
     let host = replaceHttp(origin);
 
