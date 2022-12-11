@@ -10,8 +10,10 @@ const PORT = process.env.PORT || 7070;
 
 app.use(
   cors({
-    origin: "*",
+    origin: ["https://enroll.msls.one"],
+    methods: "GET",
     "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "*",
   })
 );
 app.use(express.json());
@@ -22,17 +24,6 @@ const client = new MongoClient(process.env.DB_URI, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
-
-async function connectDB() {
-  try {
-    await client.connect();
-    console.log("DB connection established");
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-connectDB();
 
 app.get("/", (req, res) => {
   res.send("Welcome to Enroll Statistics");
