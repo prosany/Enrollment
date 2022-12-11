@@ -1,6 +1,7 @@
 const courseName = document.getElementById("name");
 const startAt = document.getElementById("startAt");
 const endOn = document.getElementById("endOn");
+const totalViewCount = document.getElementById("totalView");
 const outlinePlan = document.getElementById("outline");
 const enrolledAmount = document.getElementById("enrolled");
 const coursePrice = document.getElementById("price");
@@ -12,12 +13,22 @@ const section = document.getElementById("section");
 let course = null;
 let error = null;
 let loading = true;
+const URL = "https://heroapi.msls.one";
 
 function updateContent(content) {
   section.classList.remove("hidden");
   section.classList.add("block");
-  const { name, startedAt, endsOn, outline, enrolled, price, amount, symbol } =
-    content;
+  const {
+    name,
+    startedAt,
+    endsOn,
+    outline,
+    enrolled,
+    price,
+    amount,
+    totalView,
+    symbol,
+  } = content;
   courseName.innerHTML = name;
 
   startAt.innerHTML = `<i class="fad fa-calendar-alt pr-1 text-gray-600"></i> ${moment(
@@ -27,6 +38,8 @@ function updateContent(content) {
   endOn.innerHTML = `<i class="fad fa-clock pr-1 text-gray-600"></i> ${moment(
     endsOn
   ).format("MMMM Do, YYYY h:mm A")}`;
+
+  totalViewCount.innerHTML = `<i class="fad fa-glasses pr-1 text-gray-600"></i> <strong>${totalView}</strong> total view`;
 
   outlinePlan.innerHTML = "";
   outline.forEach((data, index) => {
@@ -44,7 +57,7 @@ function updateContent(content) {
 }
 
 async function getCourse() {
-  fetch("https://heroapi.msls.one/status?amount=true")
+  fetch(URL + "/status?amount=true")
     .then((data) => data.json())
     .then((res) => {
       loading = null;
@@ -65,6 +78,18 @@ async function getCourse() {
       if (error) {
         sectionLoad.innerHTML = `<div class="font-text text-sm text-center my-5">We're having trouble accessing the server.</div>`;
       }
+    });
+}
+
+async function updateViews() {
+  if (sessionStorage.getItem("updateViews")) return;
+  fetch(URL + "/updateViews")
+    .then((res) => res.json())
+    .then((data) => {
+      sessionStorage.setItem("updateViews", JSON.stringify(data));
+    })
+    .catch((err) => {
+      sessionStorage.removeItem("updateViews");
     });
 }
 
@@ -92,6 +117,7 @@ window.addEventListener("DOMContentLoaded", () => {
   </div>`;
   }
   getCourse();
+  updateViews();
 });
 
 setInterval(() => {
