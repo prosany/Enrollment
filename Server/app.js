@@ -57,7 +57,7 @@ app.get("/status", validateHost, async (req, res) => {
     if (amount) {
       responeToSend = {
         ...responeToSend,
-        // amount: numberWithCommas(data.course.price * data.enrolled),
+        amount: 0,
         symbol: "৳",
       };
     }
