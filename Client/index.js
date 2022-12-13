@@ -25,7 +25,6 @@ function updateContent(content) {
     outline,
     enrolled,
     price,
-    amount,
     totalView,
     symbol,
   } = content;
