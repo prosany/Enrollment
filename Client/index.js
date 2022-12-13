@@ -5,7 +5,7 @@ const totalViewCount = document.getElementById("totalView");
 const outlinePlan = document.getElementById("outline");
 const enrolledAmount = document.getElementById("enrolled");
 const coursePrice = document.getElementById("price");
-const totalAmount = document.getElementById("amount");
+// const totalAmount = document.getElementById("amount");
 const copyright = document.getElementById("copyright");
 const sectionLoad = document.getElementById("sectionLoad");
 const section = document.getElementById("section");
@@ -53,7 +53,7 @@ function updateContent(content) {
 
   enrolledAmount.innerHTML = enrolled;
   coursePrice.innerHTML = price + symbol;
-  totalAmount.innerHTML = amount + symbol;
+  // totalAmount.innerHTML = amount + symbol;
 }
 
 async function getCourse() {
