@@ -34,11 +34,12 @@ app.get("/status", validateHost, async (req, res) => {
   try {
     const db = client.db("enrollment");
     const coll = db.collection("views");
+    const batchColl = db.collection("batch");
     const result = await coll.findOne({
       _id: ObjectId("63964c4090ccb4b057e1a707"),
     });
 
-    const { amount } = req.query;
+    const { amount, code, query } = req.query;
     const { data: response } = await axios.get(process.env.GET_URL, {
       headers: { "Accept-Encoding": "gzip,deflate,compress" },
     });
@@ -53,13 +54,25 @@ app.get("/status", validateHost, async (req, res) => {
       price: data.course.price,
       outline: data.course.whatYouWillLearn,
       totalView: retirement(parseFloat(result.totalCount)),
+      amount: amount ? numberWithCommas(data.enrolled * 5500) : 0,
+      symbol: "৳",
     };
-    if (amount) {
-      responeToSend = {
-        ...responeToSend,
-        amount: 0,
-        symbol: "৳",
-      };
+
+    if (code) {
+      await batchColl.findOneAndUpdate(
+        { code },
+        {
+          $set: {
+            data: responeToSend,
+          },
+        },
+        { upsert: true }
+      );
+    }
+
+    if (query) {
+      const queryData = await batchColl.findOne({ code });
+      return res.status(200).send(queryData.data);
     }
 
     res.status(200).send(responeToSend);
@@ -91,6 +104,58 @@ app.get("/updateViews", validateHost, async (req, res) => {
   } catch (error) {
     res.status(500).send({ status: 0, message: error.message });
     res.end();
+  }
+});
+
+app.get("/create-batch", validateHost, async (req, res) => {
+  try {
+    const { name, code } = req.query;
+    if (!name || !code) {
+      return res
+        .status(200)
+        .send({ status: 0, message: "Batch Name and Code Required." });
+    }
+    const db = client.db("enrollment");
+    const batchColl = db.collection("batch");
+    const batch = await batchColl.insertOne({ name, code, data: {} });
+    if (!batch.insertedId) {
+      return res
+        .status(200)
+        .send({ status: 0, message: "Batch Create Failed." });
+    }
+
+    return res.status(201).send({ status: 1, message: "Batch Created." });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ status: 0, message: "We are unable to create batch." });
+  }
+});
+
+app.get("/get-batch", validateHost, async (req, res) => {
+  try {
+    const { code } = req.query;
+    const db = client.db("enrollment");
+    const batchColl = db.collection("batch");
+    if (!code) {
+      const batch = await batchColl.find({}).toArray();
+      return res.status(200).send({
+        status: 1,
+        message: "Successfully get all the batch",
+        data: batch,
+      });
+    }
+
+    const batch = await batchColl.find({ code }).toArray();
+    res.status(200).send({
+      status: 1,
+      message: "Successfully get the batch",
+      data: batch,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ status: 0, message: "We are unable to create batch." });
   }
 });
 
