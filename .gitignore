@@ -1,4 +1,6 @@
 node_modules
 Server/node_modules
+next-client/node_modules
+next-client/package-lock.json
 Server/.env
 Server/yarn.lock
