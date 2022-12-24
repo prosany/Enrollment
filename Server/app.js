@@ -32,18 +32,40 @@ app.get("/", (req, res) => {
 
 app.get("/status", validateHost, async (req, res) => {
   try {
+    const { amount, code, query } = req.query;
+    if (query) {
+      const queryData = await batchColl.findOne({ code });
+      if (queryData) {
+        return res.status(200).send(queryData.data);
+      }
+      return res
+        .status(200)
+        .send({ status: 0, message: "Couldn't find entry" });
+    }
+
     const db = client.db("enrollment");
     const coll = db.collection("views");
     const batchColl = db.collection("batch");
     const result = await coll.findOne({
       _id: ObjectId("63964c4090ccb4b057e1a707"),
     });
-
-    const { amount, code, query } = req.query;
     const { data: response } = await axios.get(process.env.GET_URL, {
       headers: { "Accept-Encoding": "gzip,deflate,compress" },
     });
     const { data } = response;
+    let regEnds = new Date(data.course.registrationEndDate).getTime();
+    let currTime = new Date().getDate();
+    if (currTime > regEnds) {
+      return res.status(200).send({
+        closed: 1,
+        id: data.course.courseId,
+        name: data.course.title,
+        startedAt: data.course.registrationStartDate,
+        endsOn: data.course.registrationEndDate,
+        enrolled: data.enrolled,
+        message: `Enrollment Closed for ${data.course.title} (${data.course.courseId}), Thanks for your support!`,
+      });
+    }
 
     let responeToSend = {
       id: data.course.courseId,
@@ -58,22 +80,15 @@ app.get("/status", validateHost, async (req, res) => {
       symbol: "৳",
     };
 
-    if (code) {
-      await batchColl.findOneAndUpdate(
-        { code },
-        {
-          $set: {
-            data: responeToSend,
-          },
+    await batchColl.findOneAndUpdate(
+      { code },
+      {
+        $set: {
+          data: responeToSend,
         },
-        { upsert: true }
-      );
-    }
-
-    if (query) {
-      const queryData = await batchColl.findOne({ code });
-      return res.status(200).send(queryData.data);
-    }
+      },
+      { upsert: true }
+    );
 
     res.status(200).send(responeToSend);
     res.end();
