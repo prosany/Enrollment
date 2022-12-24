@@ -54,7 +54,7 @@ app.get("/status", validateHost, async (req, res) => {
     });
     const { data } = response;
     let regEnds = new Date(data.course.registrationEndDate).getTime();
-    let currTime = new Date().getDate();
+    let currTime = new Date().getTime();
     if (currTime > regEnds) {
       return res.status(200).send({
         closed: 1,
@@ -81,9 +81,11 @@ app.get("/status", validateHost, async (req, res) => {
     };
 
     await batchColl.findOneAndUpdate(
-      { code },
+      { code: data.course.courseId },
       {
         $set: {
+          code: data.course.courseId,
+          name: data.course.courseId,
           data: responeToSend,
         },
       },
